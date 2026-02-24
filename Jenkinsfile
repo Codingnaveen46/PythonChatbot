@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "opsnaveen-python-chatbot:${GIT_COMMIT}"
+        IMAGE_NAME = "opsnaveen/opsnaveen-python-chatbot:${GIT_COMMIT}"
     }
 
     stages {
