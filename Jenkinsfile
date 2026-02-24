@@ -26,6 +26,26 @@ pipeline {
             }
         }
 
+        stage('UI Health Test') {
+            steps {
+                sh '''
+                    echo "Starting temporary container for UI test..."
+                    docker run -d --rm --name temp-ui-test -p 8501:8501 ${IMAGE_NAME}
+
+                    echo "Waiting for Streamlit to start..."
+                    sleep 8
+
+                    echo "Checking UI accessibility..."
+                    curl -f http://localhost:8501 > /dev/null
+
+                    echo "UI is reachable."
+                    
+                    # Stop the temp container
+                    docker stop temp-ui-test || true
+                '''
+            }
+        }
+
         stage('Login to Docker Hub') {
             steps {
                 withCredentials([
@@ -54,11 +74,11 @@ pipeline {
         stage('Run Container') {
             steps {
                 sh '''
-                    echo "Cleaning any running container..."
                     docker rm -f opsnaveen-python-chatbot || true
 
-                    echo "Starting new container..."
                     docker run -d --name opsnaveen-python-chatbot -p 9001:8501 ${IMAGE_NAME}
+
+                    echo "Deployment complete. Application running on port 9001."
                 '''
             }
         }
