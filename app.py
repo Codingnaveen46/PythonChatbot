@@ -26,6 +26,8 @@ for msg in st.session_state.messages:
     with st.chat_message(role):
         st.markdown(msg.content)
 
+        ## this is a test commit
+
 prompt = st.chat_input("Type your message...")
 if prompt:
     user_msg = HumanMessage(content=prompt)
