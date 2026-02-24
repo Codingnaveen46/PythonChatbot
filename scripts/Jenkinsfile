@@ -25,10 +25,7 @@ pipeline {
         stage('Run Container') {
             steps {
                 sh '''
-                    # Remove existing container (avoid name conflicts)
                     docker rm -f opsnaveen-python-chatbot || true
-
-                    # Run new container
                     docker run -d --name opsnaveen-python-chatbot -p 9001:8501 ${IMAGE_NAME}
                 '''
             }
